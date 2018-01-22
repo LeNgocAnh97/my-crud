@@ -32,10 +32,10 @@
     },
     "autoload": {
         "psr-4": {
-            "tongvanduc\\my-crud\\": "src/"
+            "tongvanduc\\mycrud\\": "src/"
         }
     },
     "extra": {
-        "bootstrap": "tongvanduc\\my-crud\\Bootstrap"
+        "bootstrap": "tongvanduc\\mycrud\\Bootstrap"
     }
 }
