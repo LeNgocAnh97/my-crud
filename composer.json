@@ -1,0 +1,41 @@
+{
+    "name": "tongvanduc/my-crud",
+    "description": "Gii CRUD template yii2",
+    "type": "yii2-extension",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Tong Van Duc",
+            "email": "tongduc315@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.0",
+        "yiisoft/yii2": "*",
+        "yiisoft/yii2-gii": "*",
+        "yiisoft/yii2-bootstrap": "*",
+        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
+        "webzop/yii2-notifications": "*",
+        "kartik-v/yii2-dialog": "*",
+        "wokster/yii2-seo-module": "*",
+	    "kartik-v/yii2-grid": "^3.0.4",
+        "kartik-v/yii2-mpdf": "^1.0.0",
+        "kartik-v/yii2-editable": "^1.7.3",
+        "yiisoft/yii2-redis": "^2.0",
+        "kartik-v/yii2-money": "*",
+        "kartik-v/yii2-social": "dev-master",
+        "kartik-v/yii2-sortable-input": "*",
+        "kartik-v/yii2-field-range": "*",
+        "kartik-v/yii2-tree-manager": "@dev",
+        "kartik-v/yii2-dropdown-x": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "tongvanduc\\mycrud\\": "src/"
+        }
+    },
+    "extra": {
+        "bootstrap": "tongvanduc\\mycrud\\Bootstrap"
+    }
+}
