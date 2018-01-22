@@ -18,8 +18,8 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use kartik\grid\GridView;
-use tongvanduc\ajaxcrud\CrudAsset;
-use tongvanduc\ajaxcrud\BulkButtonWidget;
+use tongvanduc\mycrud\CrudAsset;
+use tongvanduc\mycrud\BulkButtonWidget;
 
 /* @var $this yii\web\View */
 <?= !empty($generator->searchModelClass) ? "/* @var \$searchModel " . ltrim($generator->searchModelClass, '\\') . " */\n" : '' ?>

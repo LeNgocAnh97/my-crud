@@ -1,16 +1,16 @@
 <?php 
 
-namespace tongvanduc\ajaxcrud;
+namespace tongvanduc\mycrud;
 
 use yii\web\AssetBundle;
 
 /**
- * @author Tống Văn Đức <tongduc3115@gmail.com>
+ * @author Tống Văn Đức <tongduc315@gmail.com>
  * @since 1.x
  */
 class CrudAsset extends AssetBundle
 {
-    public $sourcePath = '@ajaxcrud/assets';
+    public $sourcePath = '@mycrud/assets';
 
 //    public $publishOptions = [
 //        'forceCopy' => true,

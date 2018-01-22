@@ -1,8 +1,8 @@
 /*!
  * Ajax Crud 
  * =================================
- * Use for tongvanduc/yii2-ajaxcrud extension
- * @author Tống Văn Đức tongduc3115@gmail.com
+ * Use for tongvanduc/mycrud extension
+ * @author Tống Văn Đức tongduc315@gmail.com
  */
 $(document).ready(function () {
 

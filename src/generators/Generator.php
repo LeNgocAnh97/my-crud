@@ -1,5 +1,5 @@
 <?php
-namespace tongvanduc\ajaxcrud\generators;
+namespace tongvanduc\mycrud\generators;
 
 use Yii;
 use yii\db\ActiveRecord;
@@ -19,7 +19,7 @@ use yii\web\Controller;
  * @property boolean|\yii\db\TableSchema $tableSchema This property is read-only.
  * @property string $viewPath The controller view path. This property is read-only.
  *
- * @author Tống Văn Đức <tongduc3115@gmail.com>
+ * @author Tống Văn Đức <tongduc315@gmail.com>
  * @since 1.x
  */
 class Generator extends \yii\gii\Generator

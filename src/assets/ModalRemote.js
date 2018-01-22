@@ -2,7 +2,7 @@
  * Modal Remote
  * =================================
  * Use for tongvanduc/yii2-ajaxcrud extension
- * @author Tống Văn Đức tongduc3115@gmail.com
+ * @author Tống Văn Đức tongduc315@gmail.com
  */
 (function ($) {
     $.fn.hasAttr = function (name) {
