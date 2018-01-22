@@ -13,18 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="composer.json" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/composer.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-209">
-              <caret line="1" column="29" lean-forward="false" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="29" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -142,12 +131,20 @@
       <option name="presentableId" value="Default" />
       <updated>1516651528438</updated>
       <workItem from="1516651529719" duration="462000" />
-      <workItem from="1516652673330" duration="178000" />
+      <workItem from="1516652673330" duration="748000" />
     </task>
+    <task id="LOCAL-00001" summary="lolo">
+      <created>1516652866978</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1516652866978</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="640000" />
+    <option name="totallyTimeSpent" value="1210000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1320" height="784" extended-state="6" />
@@ -176,6 +173,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="lolo" />
+    <option name="LAST_COMMIT_MESSAGE" value="lolo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -262,8 +263,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/composer.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-209">
-          <caret line="1" column="29" lean-forward="false" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="29" />
+        <state relative-caret-position="131">
+          <caret line="11" column="28" lean-forward="true" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
           <folding />
         </state>
       </provider>
