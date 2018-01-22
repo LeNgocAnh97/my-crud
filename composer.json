@@ -1,5 +1,5 @@
 {
-    "name": "tongvanduc/mycrud",
+    "name": "tongvanduc/my-crud",
     "description": "Gii CRUD template yii2",
     "type": "yii2-extension",
     "license": "Apache-2.0",
@@ -32,10 +32,10 @@
     },
     "autoload": {
         "psr-4": {
-            "tongvanduc\\mycrud\\": "src/"
+            "tongvanduc\\my-crud\\": "src/"
         }
     },
     "extra": {
-        "bootstrap": "tongvanduc\\mycrud\\Bootstrap"
+        "bootstrap": "tongvanduc\\my-crud\\Bootstrap"
     }
 }
