@@ -41,6 +41,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
+use yii\helpers\Json;
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
@@ -68,24 +69,44 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      * @return mixed
      */
     public function actionIndex()
-    {    
-       <?php if (!empty($generator->searchModelClass)): ?>
- $searchModel = new <?= isset($searchModelAlias) ? $searchModelAlias : $searchModelClass ?>();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    {
+        if (isset($_POST['hasEditable'])) {
+            // use Yii's response format to encode output as JSON
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-<?php else: ?>
-        $dataProvider = new ActiveDataProvider([
-            'query' => <?= $modelClass ?>::find(),
-        ]);
+            $id = Yii::$app->request->post('editableKey');
+            $model = <?= $modelClass ?>::findOne($id);
 
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
-<?php endif; ?>
+            $post = array();
+            $posted = current($_POST['<?= $modelClass ?>']);
+            $post['<?= $modelClass ?>'] = $posted;
+
+            if ($model->load($post)) {
+                $model->save();
+                $output = Json::encode(['output' => '', 'message' => '']);
+            } else {
+                $output = Json::encode(['output' => '', 'message' => '']);
+            }
+            return $output;
+        } else {
+               <?php if (!empty($generator->searchModelClass)): ?>
+                   $searchModel = new <?= isset($searchModelAlias) ? $searchModelAlias : $searchModelClass ?>();
+                   $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+                   return $this->render('index', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+                   ]);
+               <?php else: ?>
+                    $dataProvider = new ActiveDataProvider([
+                        'query' => <?= $modelClass ?>::find(),
+                    ]);
+
+                    return $this->render('index', [
+                        'dataProvider' => $dataProvider,
+                    ]);
+               <?php endif; ?>
+        }
     }
 
 

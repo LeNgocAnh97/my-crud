@@ -15,6 +15,11 @@ if (empty($safeAttributes)) {
 
 echo "<?php\n";
 ?>
+use <?= ltrim($generator->modelClass, '\\') ?>;
+use dosamigos\ckeditor\CKEditor;
+use kartik\select2\Select2;
+use kartik\switchinput\SwitchInput;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -28,6 +33,9 @@ use yii\widgets\ActiveForm;
     <?= "<?php " ?>$form = ActiveForm::begin(); ?>
 
 <?php foreach ($generator->getColumnNames() as $attribute) {
+    if ($attribute == 'created_at' || $attribute == 'updated_at') {
+        continue;
+    }
     if (in_array($attribute, $safeAttributes)) {
         echo "    <?= " . $generator->generateActiveField($attribute) . " ?>\n\n";
     }

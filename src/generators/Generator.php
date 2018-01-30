@@ -1,4 +1,5 @@
 <?php
+
 namespace tongvanduc\mycrud\generators;
 
 use Yii;
@@ -7,8 +8,10 @@ use yii\db\BaseActiveRecord;
 use yii\db\Schema;
 use yii\gii\CodeFile;
 use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
+
 /**
  * Generates CRUD
  *
@@ -92,7 +95,7 @@ class Generator extends \yii\gii\Generator
         return array_merge(parent::hints(), [
             'modelClass' => 'This is the ActiveRecord class associated with the table that CRUD will be built upon.
                 You should provide a fully qualified class name, e.g., <code>app\models\Post</code>.',
-             'controllerClass' => 'This is the name of the controller class to be generated. You should
+            'controllerClass' => 'This is the name of the controller class to be generated. You should
                 provide a fully qualified namespaced class (e.g. <code>app\controllers\PostController</code>),
                 and class name should be in CamelCase with an uppercase first letter. Make sure the class
                 is using the same namespace as specified by your application\'s controllerNamespace property.',
@@ -127,7 +130,7 @@ class Generator extends \yii\gii\Generator
      */
     public function validateModelClass()
     {
-        /* @var $class ActiveRecord */     
+        /* @var $class ActiveRecord */
         $class = $this->modelClass;
         $pk = $class::primaryKey();
         if (empty($pk)) {
@@ -209,6 +212,8 @@ class Generator extends \yii\gii\Generator
     public function generateActiveField($attribute)
     {
         $tableSchema = $this->getTableSchema();
+        $modelClassName = $modelClass = StringHelper::basename($this->modelClass);
+
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
                 return "\$form->field(\$model, '$attribute')->passwordInput()";
@@ -217,10 +222,39 @@ class Generator extends \yii\gii\Generator
             }
         }
         $column = $tableSchema->columns[$attribute];
+
+        if ($column->name == "description" || $column->name == "content" || $column->name == "overview") {
+            return "\$form->field(\$model, '$attribute')->widget(CKEditor::className(), [
+                        'options' => ['rows' => 6],
+                        'preset' => 'basic',
+                    ])";
+        }
+
+        if (strpos($column->name, 'is_') > -1) {
+            return "\$form->field(\$model, '$attribute')->widget(SwitchInput::classname(), [
+                        'type' => SwitchInput::CHECKBOX
+                    ])";
+        }
+
+        if (strpos($column->name, '_id') > -1) {
+            return "\$form->field(\$model, '$attribute')->widget(Select2::classname(), [
+                            'data' => ArrayHelper::map($modelClassName::find()->all(), 'id', 'name'),
+                            'options' => ['multiple' => false, 'placeholder' => 'Select a state ...'],
+                            'pluginOptions' => [
+                            'allowClear' => true
+                        ],
+                    ])";
+        }
+
         if ($column->phpType === 'boolean') {
-            return "\$form->field(\$model, '$attribute')->checkbox()";
+            return "\$form->field(\$model, '$attribute')->widget(SwitchInput::classname(), [
+                        'type' => SwitchInput::CHECKBOX
+                    ])";
         } elseif ($column->type === 'text') {
-            return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";
+            return "\$form->field(\$model, '$attribute')->widget(CKEditor::className(), [
+                        'options' => ['rows' => 6],
+                        'preset' => 'basic',
+                    ])";
         } else {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
                 $input = 'passwordInput';
@@ -233,7 +267,7 @@ class Generator extends \yii\gii\Generator
                     $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
                 }
                 return "\$form->field(\$model, '$attribute')->dropDownList("
-                    . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)).", ['prompt' => ''])";
+                    . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => ''])";
             } elseif ($column->phpType !== 'string' || $column->size === null) {
                 return "\$form->field(\$model, '$attribute')->$input()";
             } else {

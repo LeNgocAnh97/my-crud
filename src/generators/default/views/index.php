@@ -48,7 +48,9 @@ CrudAsset::register($this);
                     '{toggleData}'.
                     '{export}'
                 ],
-            ],          
+            ],
+            'floatHeader'=>true,
+            'floatHeaderOptions'=>['scrollingTop'=>'50'],
             'striped' => true,
             'condensed' => true,
             'responsive' => true,          
