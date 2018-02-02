@@ -86,9 +86,11 @@ foreach ($generator->getColumnNames() as $name) {
             echo "        'class'=>'\kartik\grid\EditableColumn',\n";
             echo "        'contentOptions' => ['class' => 'col-md-1 nowrap'],\n";
             echo "        'attribute'=>'" . $name . "',\n";
-            echo "        'value' => function(\$model) {\n";
-            echo "              return $" . "model->get{$prefix}Name();\n";
-            echo "         },\n";
+            if ($name == "parent_id") {
+                echo "     return \$model->parent[\"name\"];\n";
+            } else {
+                echo "     return \$model->get{$prefix}Name();\n";
+            }
             echo "         'hAlign'=>'center',\n";
             echo "         'vAlign'=>'middle',\n";
             echo "         'editableOptions' => function (\$model) {\n";
