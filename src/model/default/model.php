@@ -94,7 +94,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
      */
     public function rules()
     {
-        return [ <?= empty($rules) ? '' : ("\n            " . implode(",\n            ", $rules) . ",\n        ") ?>,
+        return [ <?= empty($rules) ? '' : ("\n            " . implode(",\n            ", $rules) . ",\n        ") ?>
             <?php foreach ($labels as $name => $label): ?>
                     <?php if (strpos($name,'img_') !== false):  ?>
 [['imageThumb', 'imageBanner', 'imageFeature'], 'file', 'extensions' => 'jpg, gif, png']
