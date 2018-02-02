@@ -13,6 +13,7 @@ use yii\db\ActiveRecordInterface;
 $controllerClass = StringHelper::basename($generator->controllerClass);
 $modelClass = StringHelper::basename($generator->modelClass);
 $searchModelClass = StringHelper::basename($generator->searchModelClass);
+
 if ($modelClass === $searchModelClass) {
     $searchModelAlias = $searchModelClass . 'Search';
 }
@@ -38,10 +39,12 @@ use yii\data\ActiveDataProvider;
 <?php endif; ?>
 use <?= ltrim($generator->baseControllerClass, '\\') ?>;
 use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\web\UploadedFile;
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
@@ -54,6 +57,15 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -160,16 +172,41 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
         
-                ];         
-            }else if($model->load($request->post()) && $model->save()){
-                return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Create new <?= $modelClass ?>",
-                    'content'=>'<span class="text-success">Create <?= $modelClass ?> success</span>',
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
-        
-                ];         
+                ];
+            }else if($model->load($request->post())){
+                <?php foreach ($generator->columnNames as $item): ?>
+                    <?php if ($item == 'img_thumb'): ?>
+                        $model->imageThumb = UploadedFile::getInstance($model, 'imageThumb');
+                        $model->uploadThumb();
+                    <?php endif; ?>
+                    <?php if ($item == 'img_banner'): ?>
+                        $model->imageBanner = UploadedFile::getInstance($model, 'imageBanner');
+                        $model->uploadBanner();
+                    <?php endif; ?>
+                    <?php if ($item == 'img_feature'): ?>
+                        $model->imageFeature = UploadedFile::getInstance($model, 'imageFeature');
+                        $model->uploadFeature();
+                    <?php endif; ?>
+                <?php endforeach; ?>
+
+                if ($model->save()) {
+                    return [
+                        'forceReload' => '#crud-datatable-pjax',
+                        'title' => "Create new <?= $modelClass ?>",
+                        'content' => '<span class="text-success">Create <?= $modelClass ?> success</span>',
+                        'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::a('Create More', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                    ];
+                } else{
+                    return [
+                        'title'=> "Create new <?= $modelClass ?>",
+                        'content'=>$this->renderAjax('create', [
+                        'model' => $model,
+                        ]),
+                        'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                        Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    ];
+                }
             }else{           
                 return [
                     'title'=> "Create new <?= $modelClass ?>",
@@ -222,16 +259,40 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
                 ];         
-            }else if($model->load($request->post()) && $model->save()){
-                return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "<?= $modelClass ?> #".<?= $actionParams ?>,
-                    'content'=>$this->renderAjax('view', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','<?= substr($actionParams,1) ?>'=><?= $actionParams ?>],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
+            }else if($model->load($request->post())){
+                <?php foreach ($generator->columnNames as $item): ?>
+                    <?php if ($item == 'img_thumb'): ?>
+                        $model->imageThumb = UploadedFile::getInstance($model, 'imageThumb');
+                        $model->uploadThumb();
+                    <?php endif; ?>
+                    <?php if ($item == 'img_banner'): ?>
+                        $model->imageBanner = UploadedFile::getInstance($model, 'imageBanner');
+                        $model->uploadBanner();
+                    <?php endif; ?>
+                    <?php if ($item == 'img_feature'): ?>
+                        $model->imageFeature = UploadedFile::getInstance($model, 'imageFeature');
+                        $model->uploadFeature();
+                    <?php endif; ?>
+                <?php endforeach; ?>
+
+                if ($model->save()) {
+                    return [
+                        'forceReload' => '#crud-datatable-pjax',
+                        'title' => "Create new <?= $modelClass ?>",
+                        'content' => '<span class="text-success">Create <?= $modelClass ?> success</span>',
+                        'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::a('Create More', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                    ];
+                } else{
+                    return [
+                        'title'=> "Create new <?= $modelClass ?>",
+                        'content'=>$this->renderAjax('create', [
+                            'model' => $model,
+                        ]),
+                        'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                        Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    ];
+                }
             }else{
                  return [
                     'title'=> "Update <?= $modelClass ?> #".<?= $actionParams ?>,
@@ -266,7 +327,15 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     public function actionDelete(<?= $actionParams ?>)
     {
         $request = Yii::$app->request;
-        $this->findModel(<?= $actionParams ?>)->delete();
+        $model = $this->findModel(<?= $actionParams ?>);
+        <?php foreach ($generator->columnNames as $columnName): ?>
+            <?php if (strpos($columnName, 'img_') !== false): ?>
+                if (isset($model-><?= $columnName ?>) && !empty($model-><?= $columnName ?>)) {
+                    unlink($model->getPathImage('<?= $columnName ?>'));
+                }
+            <?php endif; ?>
+        <?php endforeach; ?>
+        $model->delete();
 
         if($request->isAjax){
             /*

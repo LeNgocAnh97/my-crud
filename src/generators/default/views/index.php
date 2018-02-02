@@ -80,4 +80,9 @@ CrudAsset::register($this);
     "footer"=>"",// always need it for jquery plugin
 ])?>'."\n"?>
 <?='<?php Modal::end(); ?>'?>
+<style>
+    .modal-dialog {
+        width: 1000px;
+    }
+</style>
 

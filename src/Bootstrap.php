@@ -23,6 +23,7 @@ class Bootstrap implements BootstrapInterface {
         if ($app->hasModule('gii')) {
             if (!isset($app->getModule('gii')->generators['mycrud'])) {
                 $app->getModule('gii')->generators['mycrud'] = 'tongvanduc\mycrud\generators\Generator';
+                $app->getModule('gii')->generators['mymodel'] = 'tongvanduc\mycrud\model\Generator';
             }
         }
     }

@@ -38,7 +38,7 @@ class Generator extends \yii\gii\Generator
      */
     public function getName()
     {
-        return 'Ajax CRUD Generator';
+        return 'Ajax CRUD Generator TVĐ';
     }
 
     /**
@@ -212,7 +212,7 @@ class Generator extends \yii\gii\Generator
     public function generateActiveField($attribute)
     {
         $tableSchema = $this->getTableSchema();
-        $modelClassName = $modelClass = StringHelper::basename($this->modelClass);
+        $modelClassName = StringHelper::basename($this->modelClass);
 
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
@@ -223,40 +223,82 @@ class Generator extends \yii\gii\Generator
         }
         $column = $tableSchema->columns[$attribute];
 
-        if ($column->name == "description" || $column->name == "content" || $column->name == "overview") {
-            return "\$form->field(\$model, '$attribute')->widget(CKEditor::className(), [
-                        'options' => ['rows' => 6],
-                        'preset' => 'basic',
-                    ])";
+        if ($attribute == "description" || $attribute == "content" || $attribute == "overview") {
+            return "\$form->field(\$model, '$attribute')->widget(DCKEditor::className(), [
+                'options' => ['rows' => 6],
+                'preset' => 'basic',
+            ])";
         }
 
-        if (strpos($column->name, 'is_') > -1) {
+        if ($attribute == "birth_date" || $attribute == "publish_date") {
+            return "\$form->field(\$model, '$attribute')->widget(DateControl::classname(), [
+                'options' => ['placeholder' => 'Enter $attribute ...'],
+                'type' => DateControl::FORMAT_DATE,
+                'language'=>Yii::\$app->language,
+                'pluginOptions' => [
+                    'autoclose'=>true,
+                    'format' => 'dd-mm-yyyy'
+                ]
+            ])";
+        }
+
+        if (strpos($attribute, 'is_') !== false) {
             return "\$form->field(\$model, '$attribute')->widget(SwitchInput::classname(), [
-                        'type' => SwitchInput::CHECKBOX
-                    ])";
+                'type' => SwitchInput::CHECKBOX
+            ])";
         }
 
-        if (strpos($column->name, '_id') > -1) {
+        if (strpos($attribute, '_id') !== false) {
             return "\$form->field(\$model, '$attribute')->widget(Select2::classname(), [
-                            'data' => ArrayHelper::map($modelClassName::find()->all(), 'id', 'name'),
-                            'options' => ['multiple' => false, 'placeholder' => 'Select a state ...'],
-                            'pluginOptions' => [
-                            'allowClear' => true
-                        ],
-                    ])";
+                    'data' => ArrayHelper::map($modelClassName::find()->all(), 'id', 'name'),
+                    'options' => ['multiple' => false, 'placeholder' => 'Select a $attribute ...'],
+                    'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ])";
+        }
+
+        if (strpos($attribute, 'lang') !== false) {
+            return "\$form->field(\$model, '$attribute')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map((new $modelClassName())->getLangs(), 'id', 'name'),
+                    'options' => ['multiple' => false, 'placeholder' => 'Select a lang ...'],
+                    'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ])";
+        }
+
+        if ($attribute == 'type') {
+            return "\$form->field(\$model, '$attribute')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map((new $modelClassName())->getTypes(), 'id', 'name'),
+                    'options' => ['multiple' => false, 'placeholder' => 'Select a $attribute ...'],
+                    'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ])";
+        }
+
+        if ($attribute == 'status') {
+            return "\$form->field(\$model, '$attribute')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map((new $modelClassName())->getStatuss(), 'id', 'name'),
+                    'options' => ['multiple' => false, 'placeholder' => 'Select a $attribute ...'],
+                    'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ])";
         }
 
         if ($column->phpType === 'boolean') {
             return "\$form->field(\$model, '$attribute')->widget(SwitchInput::classname(), [
-                        'type' => SwitchInput::CHECKBOX
-                    ])";
+                    'type' => SwitchInput::CHECKBOX
+                ])";
         } elseif ($column->type === 'text') {
             return "\$form->field(\$model, '$attribute')->widget(CKEditor::className(), [
-                        'options' => ['rows' => 6],
-                        'preset' => 'basic',
-                    ])";
+                'options' => ['rows' => 6],
+                'preset' => 'basic',
+            ])";
         } else {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
+            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
                 $input = 'passwordInput';
             } else {
                 $input = 'textInput';
@@ -302,10 +344,12 @@ class Generator extends \yii\gii\Generator
      */
     public function generateColumnFormat($column)
     {
-        if ($column->phpType === 'boolean') {
+        if ($column->name == 'birth_date' || $column->name == 'publish_date') {
+            return 'date';
+        }  elseif ($column->phpType === 'boolean') {
             return 'boolean';
-        } elseif ($column->type === 'text') {
-            return 'ntext';
+        } elseif ($column->type === 'text' || $column->type === 'longtext') {
+            return 'html';
         } elseif (stripos($column->name, 'time') !== false && $column->phpType === 'integer') {
             return 'datetime';
         } elseif (stripos($column->name, 'email') !== false) {

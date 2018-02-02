@@ -16,12 +16,13 @@ if (empty($safeAttributes)) {
 echo "<?php\n";
 ?>
 use <?= ltrim($generator->modelClass, '\\') ?>;
-use dosamigos\ckeditor\CKEditor;
+use common\widgets\DCKEditor;
 use kartik\select2\Select2;
 use kartik\switchinput\SwitchInput;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\datecontrol\DateControl;
 
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
