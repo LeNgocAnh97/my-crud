@@ -230,7 +230,7 @@ class Generator extends \yii\gii\Generator
             ])";
         }
 
-        if ($attribute == "birth_date" || $attribute == "publish_date") {
+        if ($attribute == "birth_date" || $attribute == "publish_date" || $attribute == 'release_date') {
             return "\$form->field(\$model, '$attribute')->widget(DateControl::classname(), [
                 'options' => ['placeholder' => 'Enter $attribute ...'],
                 'type' => DateControl::FORMAT_DATE,
@@ -246,6 +246,16 @@ class Generator extends \yii\gii\Generator
             return "\$form->field(\$model, '$attribute')->widget(SwitchInput::classname(), [
                 'type' => SwitchInput::CHECKBOX
             ])";
+        }
+
+        if (strpos($attribute, 'rate') !== false) {
+            return "\$form->field(\$model, '$attribute')->widget(StarRating::classname(), [
+                'pluginOptions' => ['size'=>'md']
+            ])";
+        }
+
+        if (strpos($attribute, 'img_') !== false || $attribute == 'song_file') {
+            return "\$form->field(\$model, '$attribute')->widget(FileInput::classname())";
         }
 
         if (strpos($attribute, '_id') !== false) {

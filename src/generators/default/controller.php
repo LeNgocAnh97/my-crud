@@ -175,18 +175,18 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                 ];
             }else if($model->load($request->post())){
                 <?php foreach ($generator->columnNames as $item): ?>
-                    <?php if ($item == 'img_thumb'): ?>
-                        $model->imageThumb = UploadedFile::getInstance($model, 'imageThumb');
-                        $model->uploadThumb();
-                    <?php endif; ?>
-                    <?php if ($item == 'img_banner'): ?>
-                        $model->imageBanner = UploadedFile::getInstance($model, 'imageBanner');
-                        $model->uploadBanner();
-                    <?php endif; ?>
-                    <?php if ($item == 'img_feature'): ?>
-                        $model->imageFeature = UploadedFile::getInstance($model, 'imageFeature');
-                        $model->uploadFeature();
-                    <?php endif; ?>
+<?php if ($item == 'img_thumb'): ?>
+    $model->imageThumb = UploadedFile::getInstance($model, 'imageThumb');
+    $model->uploadThumb();
+<?php endif; ?>
+<?php if ($item == 'img_banner'): ?>
+    $model->imageBanner = UploadedFile::getInstance($model, 'imageBanner');
+    $model->uploadBanner();
+<?php endif; ?>
+<?php if ($item == 'img_feature'): ?>
+    $model->imageFeature = UploadedFile::getInstance($model, 'imageFeature');
+    $model->uploadFeature();
+<?php endif; ?>
                 <?php endforeach; ?>
 
                 if ($model->save()) {
@@ -261,18 +261,18 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                 ];         
             }else if($model->load($request->post())){
                 <?php foreach ($generator->columnNames as $item): ?>
-                    <?php if ($item == 'img_thumb'): ?>
-                        $model->imageThumb = UploadedFile::getInstance($model, 'imageThumb');
-                        $model->uploadThumb();
-                    <?php endif; ?>
-                    <?php if ($item == 'img_banner'): ?>
-                        $model->imageBanner = UploadedFile::getInstance($model, 'imageBanner');
-                        $model->uploadBanner();
-                    <?php endif; ?>
-                    <?php if ($item == 'img_feature'): ?>
-                        $model->imageFeature = UploadedFile::getInstance($model, 'imageFeature');
-                        $model->uploadFeature();
-                    <?php endif; ?>
+<?php if ($item == 'img_thumb'): ?>
+    $model->imageThumb = UploadedFile::getInstance($model, 'imageThumb');
+    $model->uploadThumb();
+<?php endif; ?>
+<?php if ($item == 'img_banner'): ?>
+    $model->imageBanner = UploadedFile::getInstance($model, 'imageBanner');
+    $model->uploadBanner();
+<?php endif; ?>
+<?php if ($item == 'img_feature'): ?>
+    $model->imageFeature = UploadedFile::getInstance($model, 'imageFeature');
+    $model->uploadFeature();
+<?php endif; ?>
                 <?php endforeach; ?>
 
                 if ($model->save()) {

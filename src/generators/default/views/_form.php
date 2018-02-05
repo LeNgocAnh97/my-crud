@@ -18,6 +18,8 @@ echo "<?php\n";
 use <?= ltrim($generator->modelClass, '\\') ?>;
 use common\widgets\DCKEditor;
 use kartik\select2\Select2;
+use kartik\file\FileInput;
+use kartik\rating\StarRating;
 use kartik\switchinput\SwitchInput;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -38,6 +40,9 @@ use kartik\datecontrol\DateControl;
         continue;
     }
     if (in_array($attribute, $safeAttributes)) {
+        if (strpos($attribute, '_img')) {
+            echo "<?= Html::img($model->getImage('$attribute'), ['width' => 200]) ?>";
+        }
         echo "    <?= " . $generator->generateActiveField($attribute) . " ?>\n\n";
     }
 } ?>  

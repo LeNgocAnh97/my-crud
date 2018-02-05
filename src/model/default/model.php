@@ -20,7 +20,7 @@ echo "<?php\n";
 namespace <?= $generator->ns ?>;
 
 use Yii;
-
+use yii\web\UploadedFile;
 /**
  * This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
  *
@@ -38,22 +38,34 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
 {
 
 <?php foreach ($labels as $name => $label): ?>
-    <?php if ($name == 'is_active'): ?>
+    <?php if ($name == 'is_active'): echo "\n";?>
         const ACTIVE_NAME = 'Active';
         const NON_ACTIVE_NAME = 'NonActive';
-    <?php echo "\n"; endif; ?>
-    <?php if ($name == 'is_top'): ?>
+    <?php endif; ?>
+    <?php if ($name == 'is_top'): echo "\n";?>
         const TOP_NAME = 'Top';
         const NON_TOP_NAME = 'NonTop';
-    <?php echo "\n"; endif; ?>
-    <?php if ($name == 'is_new'): ?>
+    <?php endif; ?>
+    <?php if ($name == 'is_new'): echo "\n";?>
         const NEW_NAME = 'New';
         const NON_NEW_NAME = 'NonNew';
-    <?php echo "\n"; endif; ?>
-    <?php if ($name == 'is_hot'): ?>
+    <?php endif; ?>
+    <?php if ($name == 'is_hot'): echo "\n";?>
         const HOT_NAME = 'Hot';
         const NON_HOT_NAME = 'NonHot';
-    <?php echo "\n"; endif; ?>
+    <?php endif; ?>
+    <?php if ($name == 'is_album'): echo "\n";?>
+        const ALBUM_NAME = "Album";
+        const NON_ALBUM_NAME = "NonAlbum";
+    <?php endif; ?>
+    <?php if ($name == 'is_video'): echo "\n";?>
+        const VIDEO_NAME = "Video";
+        const NON_VIDEO_NAME = "NonVideo";
+    <?php endif; ?>
+    <?php if ($name == 'is_feature'): echo "\n";?>
+        const FEATURE_NAME = "Feature";
+        const NON_FEATURE_NAME = "NonFeature";
+    <?php endif; ?>
 <?php endforeach; ?>
 <?php foreach ($labels as $name => $label): ?>
     <?php if (strpos($name,'img_') !== false):  ?>
@@ -96,8 +108,8 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
     {
         return [ <?= empty($rules) ? '' : ("\n            " . implode(",\n            ", $rules) . ",\n        ") ?>
             <?php foreach ($labels as $name => $label): ?>
-                    <?php if (strpos($name,'img_') !== false):  ?>
-[['imageThumb', 'imageBanner', 'imageFeature'], 'file', 'extensions' => 'jpg, gif, png']
+                    <?php if (strpos($name,'img_') !== false):  echo "\n";?>
+            [['imageThumb', 'imageBanner', 'imageFeature'], 'file', 'extensions' => 'jpg, gif, png']
                     <?php echo "\n"; break; endif; ?>
             <?php endforeach; ?>
         ];
@@ -152,7 +164,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
         }
 
     <?php echo "\n"; endif; ?>
-    <?php if ($name == 'lang') : ?>
+    <?php if (strpos($name,'lang') !== false) : ?>
         public function getLangName()
         {
             $name = '';
@@ -166,7 +178,48 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
             }
             return $name;
         }
+        public function getLangs()
+        {
+            return array(
+                ['id' => 'en', 'name' => 'English'],
+                ['id' => 'vi', 'name' => 'Viet Nam']
+            );
+        }
     <?php echo "\n"; endif; ?>
+    <?php if ($name == 'status') : ?>
+        public function getStatuss()
+        {
+            return array(
+                ['id' => 1, 'name' => 'default'],
+            );
+        }
+
+        public function getStatusName()
+        {
+            $name = '';
+            switch ($this->status) {
+                case 1: $name = 'default'; break;
+            }
+            return $name;
+        }
+        <?php echo "\n"; endif; ?>
+    <?php if ($name == 'type') : ?>
+        public function getTypes()
+        {
+            return array(
+                ['id' => 1, 'name' => 'default'],
+            );
+        }
+
+        public function getTypeName()
+        {
+            $name = '';
+            switch ($this->type) {
+                case 1: $name = 'default'; break;
+            }
+            return $name;
+        }
+        <?php echo "\n"; endif; ?>
     <?php if (strpos($name,'img_') !== false): ?>
         <?php
             $img = str_replace('img_', '', $name);
@@ -174,11 +227,11 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
         public function upload<?= ucfirst($img) ?>()
         {
             if ($this->validate() && !empty($this->image<?= ucfirst($img) ?>)) {
-                if (!empty($this-><?= $name ?>)) {
+                if (isset($this-><?= $name ?>) && !empty($this-><?= $name ?>) && file_exists($this->getPathImage('<?= $name ?>'))) {
                     unlink($this->getPathImage('<?= $name ?>'));
                 }
-                $this->image<?= ucfirst($img) ?>->saveAs('uploads/' . self::tableName() . '/<?= $name ?>/' . time() . $this->image<?= ucfirst($img) ?>->baseName . '.' . $this->image<?= ucfirst($img) ?>->extension);
-                $this->img_thumb = time() . $this->image<?= ucfirst($img) ?>->baseName . '.' . $this->image<?= ucfirst($img) ?>->extension;
+                $this->image<?= ucfirst($img) ?>->saveAs('uploads/' . self::tableName() . '/<?= $name ?>/' . time() . str_slug($this->image<?= ucfirst($img) ?>->baseName) . '.' . $this->image<?= ucfirst($img) ?>->extension);
+                $this-><?= $name ?> = time() . str_slug($this->image<?= ucfirst($img) ?>->baseName) . '.' . $this->image<?= ucfirst($img) ?>->extension;
                 $this->image<?= ucfirst($img) ?> = null;
             } else {
                 return false;

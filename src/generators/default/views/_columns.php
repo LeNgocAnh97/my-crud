@@ -74,23 +74,16 @@ foreach ($generator->getColumnNames() as $name) {
         echo "        // 'attribute'=>'" . $name . "',\n";
         echo "    // ],\n";
     } else if (++$count < 20) {
-        if ($name == 'parent_id' || $name == 'type' || $name == 'status' || $name == 'lang') {
-
-            $prefix = null;
-            if ($name == 'parent_id')   $prefix = 'Parent';
-            elseif ($name == 'type')    $prefix = 'Type';
-            elseif ($name == 'lang')    $prefix = 'Lang';
-            else                        $prefix = 'Status';
+        if ($name == 'parent_id') {
+            $prefix = 'Parent';
 
             echo "    [\n";
             echo "        'class'=>'\kartik\grid\EditableColumn',\n";
             echo "        'contentOptions' => ['class' => 'col-md-1 nowrap'],\n";
             echo "        'attribute'=>'" . $name . "',\n";
-            if ($name == "parent_id") {
-                echo "     return \$model->parent[\"name\"];\n";
-            } else {
-                echo "     return \$model->get{$prefix}Name();\n";
-            }
+            echo "        'value' => function (\$model) {\n";
+            echo "              return \$model->parent[\"name\"];\n";
+            echo "         },\n";
             echo "         'hAlign'=>'center',\n";
             echo "         'vAlign'=>'middle',\n";
             echo "         'editableOptions' => function (\$model) {\n";
@@ -118,6 +111,43 @@ foreach ($generator->getColumnNames() as $name) {
             echo "              'pluginOptions'=>['allowClear'=>true],\n";
             echo "          ],\n";
             echo "          'filterInputOptions'=>['placeholder'=>'Any ". $prefix ."']\n";
+            echo "    ],\n";
+
+        } elseif ($name == 'type' || $name == 'status' || $name == 'lang') {
+            echo "    [\n";
+            echo "        'class'=>'\kartik\grid\EditableColumn',\n";
+            echo "        'contentOptions' => ['class' => 'col-md-1 nowrap'],\n";
+            echo "        'attribute'=>'" . $name . "',\n";
+            echo "        'value' => function(\$model) {\n";
+            echo "              return \$model->get".ucfirst($name)."Name();\n";
+            echo "         },\n";
+            echo "         'hAlign'=>'center',\n";
+            echo "         'vAlign'=>'middle',\n";
+            echo "         'editableOptions' => function (\$model) {\n";
+            echo "              return array(\n";
+            echo "                  'header' => '".ucfirst($name)."',\n";
+            echo "                  'inputType' => Editable::INPUT_SELECT2,\n";
+            echo "                  'options' => [\n";
+            echo "                      'attribute' => '". $name ."',\n";
+            echo "                      'data' => ArrayHelper::map(\$model->{$name}s, 'id', 'name'),\n";
+            echo "                      'options' => [\n";
+            echo "                          'placeholder' => 'Please select...',\n";
+            echo "                          'multiple' => false,\n";
+            echo "                      ],\n";
+            echo "                      'pluginOptions' => [\n";
+            echo "                          'allowClear' => true,\n";
+            echo "                          'closeOnSelect' => true\n";
+            echo "                      ],\n";
+            echo "                  ],\n";
+            echo "                  'asPopover' => true,\n";
+            echo "              );\n";
+            echo "          },\n";
+            echo "          'filterType'=> GridView::FILTER_SELECT2,\n";
+            echo "          'filter'=> ArrayHelper::map((new \\$generator->modelClass())->get".ucfirst($name)."s(), 'id', 'name'),\n";
+            echo "          'filterWidgetOptions'=>[\n";
+            echo "                      'pluginOptions'=>['allowClear'=>true],\n";
+            echo "                  ],\n";
+            echo "          'filterInputOptions'=>['placeholder'=>'Any ". ucfirst($name) ."']\n";
             echo "    ],\n";
 
         } elseif (strpos($name, 'is_') !== false) {

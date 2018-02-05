@@ -10,7 +10,7 @@ $urlParams = $generator->generateUrlParams();
 
 echo "<?php\n";
 ?>
-
+use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -35,7 +35,7 @@ use yii\widgets\DetailView;
                     }
                     if (strpos($column->name, 'img_') !== false) {
                         echo "[\n";
-                        echo "    'attribute' => 'img_thumb',\n";
+                        echo "    'attribute' => '$column->name',\n";
                         echo "    'format' => 'raw',\n";
                         echo "    'value' => function(\$model) {\n";
                         echo "       /* @var \$model $object */\n";
