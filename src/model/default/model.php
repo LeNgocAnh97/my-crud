@@ -230,11 +230,11 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
                 if (isset($this-><?= $name ?>) && !empty($this-><?= $name ?>) && file_exists($this->getPathImage('<?= $name ?>'))) {
                     unlink($this->getPathImage('<?= $name ?>'));
                 }
-                $dirName = Yii::$app->basePath . DIRECTORY_SEPARATOR .'web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . self::tableName() . DIRECTORY_SEPARATOR . 'img_banner' . DIRECTORY_SEPARATOR;
+                $dirName = Yii::$app->basePath . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . self::tableName() . DIRECTORY_SEPARATOR . <?= $name ?> . DIRECTORY_SEPARATOR;
                 if (!is_dir($dirName)) {
                     mkdir($dirName, 0777, true);
                 }
-                $this->image<?= ucfirst($img) ?>->saveAs('uploads/' . self::tableName() . '/<?= $name ?>/' . time() . str_slug($this->image<?= ucfirst($img) ?>->baseName) . '.' . $this->image<?= ucfirst($img) ?>->extension);
+                $this->image<?= ucfirst($img) ?>->saveAs('uploads/' . self::tableName() . DIRECTORY_SEPARATOR . <?= $name ?> . DIRECTORY_SEPARATOR . time() . str_slug($this->image<?= ucfirst($img) ?>->baseName) . '.' . $this->image<?= ucfirst($img) ?>->extension);
                 $this-><?= $name ?> = time() . str_slug($this->image<?= ucfirst($img) ?>->baseName) . '.' . $this->image<?= ucfirst($img) ?>->extension;
                 $this->image<?= ucfirst($img) ?> = null;
             } else {
@@ -250,7 +250,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
         }
 
         public function getPathImage($folder) {
-            return Yii::$app->basePath . '/web/uploads/' . self::tableName() . "/$folder/" . $this->{$folder};
+            return Yii::$app->basePath . '/uploads/' . self::tableName() . "/$folder/" . $this->{$folder};
         }
     <?php echo "\n"; break; endif; ?>
 <?php endforeach; ?>
