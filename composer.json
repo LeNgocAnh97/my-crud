@@ -16,7 +16,6 @@
         "yiisoft/yii2-gii": "*",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
-        "webzop/yii2-notifications": "*",
         "kartik-v/yii2-widgets": "*",
         "iutbay/yii2-kcfinder": "dev-master",
         "cornernote/yii2-linkall": "*"
