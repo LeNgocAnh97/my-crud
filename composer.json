@@ -18,7 +18,12 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "kartik-v/yii2-widgets": "*",
         "iutbay/yii2-kcfinder": "dev-master",
-        "cornernote/yii2-linkall": "*"
+        "cornernote/yii2-linkall": "*",
+		"kartik-v/yii2-datecontrol": "dev-master",
+        "yiisoft/yii2-redis": "^2.0",
+        "kartik-v/yii2-grid": "@dev",
+        "2amigos/yii2-ckeditor-widget": "^2.1",
+        "iutbay/yii2-kcfinder": "dev-master"
     },
     "autoload": {
         "psr-4": {
